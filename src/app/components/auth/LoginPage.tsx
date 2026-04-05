@@ -12,7 +12,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 import { Alert, AlertDescription } from '../ui/alert';
 import { Badge } from '../ui/badge';
 
-export function LoginPage() {
+const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -75,7 +75,7 @@ export function LoginPage() {
       </div>
 
       {/* Login Card */}
-      <Card>
+      <Card className='  md:w-[400px] mx-auto'>
         <CardHeader>
           <CardTitle>Welcome Back</CardTitle>
           <CardDescription>Enter your credentials to access your dashboard</CardDescription>
@@ -154,7 +154,7 @@ export function LoginPage() {
       </Card>
 
       {/* Demo Credentials */}
-      <Card className="border-dashed">
+      <Card className="md:w-[400px] mx-auto">
         <CardHeader>
           <CardTitle className="text-base">Demo Credentials</CardTitle>
           <CardDescription>Click to auto-fill credentials for testing</CardDescription>
@@ -212,3 +212,4 @@ export function LoginPage() {
     </div>
   );
 }
+export default LoginPage;
