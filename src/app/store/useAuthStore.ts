@@ -27,6 +27,20 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
+      signup: async (name: string, email: string, password: string) => {
+        set({ isLoading: true, error: null });
+        try {
+          const user = await authService.signup(name, email, password);
+          set({ user, isAuthenticated: true, isLoading: false, error: null });
+        } catch (error) {
+          set({
+            error: error instanceof Error ? error.message : 'Signup failed',
+            isLoading: false,
+          });
+          throw error;
+        }
+      },
+
       logout: () => {
         authService.logout();
         set({ user: null, isAuthenticated: false, error: null });

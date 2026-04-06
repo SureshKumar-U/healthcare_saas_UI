@@ -20,6 +20,7 @@ import { useAuthStore } from '../../store/useAuthStore';
 import { apiService } from '../../services/api';
 import  NotificationDemo from '../notifications/NotificationDemo';
 import type { AnalyticsData, Appointment } from '../../types';
+import { getStatusColor } from '@/app/utils/helpers';
 
 const DashboardPage = () =>  {
   const { user } = useAuthStore();
@@ -86,18 +87,7 @@ const DashboardPage = () =>  {
     },
   ];
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'scheduled':
-        return 'bg-blue-100 text-blue-800';
-      case 'completed':
-        return 'bg-green-100 text-green-800';
-      case 'cancelled':
-        return 'bg-red-100 text-red-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
+
 
   if (loading) {
     return (

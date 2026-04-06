@@ -1,81 +1,121 @@
-// Mock Firebase Authentication Service
-// In production, replace with actual Firebase configuration
+// Firebase Authentication Service
 
 import type { User } from '../types';
-
-// Mock user data
-const MOCK_USERS = [
-  {
-    id: '1',
-    email: 'admin@healthcare.com',
-    password: 'admin123',
-    name: 'Dr. Sarah Johnson',
-    role: 'admin' as const,
-    department: 'Administration',
-  },
-  {
-    id: '2',
-    email: 'doctor@healthcare.com',
-    password: 'doctor123',
-    name: 'Dr. Michael Chen',
-    role: 'doctor' as const,
-    department: 'Cardiology',
-  },
-  {
-    id: '3',
-    email: 'nurse@healthcare.com',
-    password: 'nurse123',
-    name: 'Emily Rodriguez',
-    role: 'nurse' as const,
-    department: 'Emergency',
-  },
-];
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  sendPasswordResetEmail,
+  updateProfile,
+  type Auth,
+  type UserCredential,
+} from 'firebase/auth';
+import { app } from '../utils/firebaseConfig';''
 
 class FirebaseAuthService {
+  private auth: Auth;
   private currentUser: User | null = null;
 
-  // Simulated delay for realistic API behavior
-  private async simulateNetworkDelay(ms: number = 1000): Promise<void> {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+  constructor() {
+    this.auth = getAuth(app);
   }
 
-  // Initialize auth state from localStorage
+  // Initialize auth state listener
   async initialize(): Promise<User | null> {
-    const storedUser = localStorage.getItem('healthcare_user');
-    if (storedUser) {
-      this.currentUser = JSON.parse(storedUser);
-      return this.currentUser;
-    }
-    return null;
+    return new Promise((resolve) => {
+      const unsubscribe = onAuthStateChanged(this.auth, async (firebaseUser) => {
+        if (firebaseUser) {
+          // Construct User object from Firebase user
+          const user: User = {
+            id: firebaseUser.uid,
+            email: firebaseUser.email || '',
+            name: firebaseUser.displayName || 'User',
+            role: 'staff' as const, // Default role, can be customized
+            department: 'General',
+            avatar: firebaseUser.photoURL || undefined,
+          };
+          this.currentUser = user;
+          localStorage.setItem('healthcare_user', JSON.stringify(user));
+          resolve(user);
+        } else {
+          this.currentUser = null;
+          localStorage.removeItem('healthcare_user');
+          resolve(null);
+        }
+        unsubscribe();
+      });
+    });
   }
 
-  // Mock login function
+  // Signup function
+  async signup(name: string, email: string, password: string): Promise<User> {
+    try {
+      const userCredential: UserCredential = await createUserWithEmailAndPassword(
+        this.auth,
+        email,
+        password
+      );
+
+      // Update profile with display name
+      await updateProfile(userCredential.user, {
+        displayName: name,
+      });
+
+      const user: User = {
+        id: userCredential.user.uid,
+        email: userCredential.user.email || '',
+        name: name,
+        role: 'staff' as const, // New users start as staff
+        department: 'General',
+      };
+
+      this.currentUser = user;
+      localStorage.setItem('healthcare_user', JSON.stringify(user));
+
+      return user;
+    } catch (error) {
+      throw this.formatFirebaseError(error);
+    }
+  }
+
+  // Login function
   async login(email: string, password: string): Promise<User> {
-    await this.simulateNetworkDelay(800);
+    try {
+      const userCredential: UserCredential = await signInWithEmailAndPassword(
+        this.auth,
+        email,
+        password
+      );
 
-    const mockUser = MOCK_USERS.find(
-      (u) => u.email === email && u.password === password
-    );
+      const user: User = {
+        id: userCredential.user.uid,
+        email: userCredential.user.email || '',
+        name: userCredential.user.displayName || 'User',
+        role: 'staff' as const, // Can be fetched from Firestore
+        department: 'General',
+        avatar: userCredential.user.photoURL || undefined,
+      };
 
-    if (!mockUser) {
-      throw new Error('Invalid email or password');
+      this.currentUser = user;
+      localStorage.setItem('healthcare_user', JSON.stringify(user));
+
+      return user;
+    } catch (error) {
+      throw this.formatFirebaseError(error);
     }
-
-    // Create user object without password
-    const { password: _, ...userWithoutPassword } = mockUser;
-    this.currentUser = userWithoutPassword;
-
-    // Store in localStorage
-    localStorage.setItem('healthcare_user', JSON.stringify(this.currentUser));
-
-    return this.currentUser;
   }
 
-  // Mock logout function
+  // Logout function
   async logout(): Promise<void> {
-    await this.simulateNetworkDelay(300);
-    this.currentUser = null;
-    localStorage.removeItem('healthcare_user');
+    try {
+      await signOut(this.auth);
+      this.currentUser = null;
+      localStorage.removeItem('healthcare_user');
+    } catch (error) {
+      throw this.formatFirebaseError(error);
+    }
   }
 
   // Get current user
@@ -88,24 +128,46 @@ class FirebaseAuthService {
     return this.currentUser !== null;
   }
 
-  // Mock password reset
+  // Password reset
   async resetPassword(email: string): Promise<void> {
-    await this.simulateNetworkDelay(1000);
-    const user = MOCK_USERS.find((u) => u.email === email);
-    if (!user) {
-      throw new Error('No user found with this email');
+    try {
+      await sendPasswordResetEmail(this.auth, email);
+      console.log(`Password reset email sent to ${email}`);
+    } catch (error) {
+      throw this.formatFirebaseError(error);
     }
-    // In real implementation, this would send a reset email
-    console.log(`Password reset email sent to ${email}`);
+  }
+
+  // Format Firebase errors
+  private formatFirebaseError(error: unknown): Error {
+    if (error instanceof Error) {
+      const message = error.message;
+
+      if (message.includes('auth/email-already-in-use')) {
+        return new Error('Email is already registered');
+      } else if (message.includes('auth/invalid-email')) {
+        return new Error('Invalid email address');
+      } else if (message.includes('auth/weak-password')) {
+        return new Error('Password is too weak. Use at least 6 characters');
+      } else if (message.includes('auth/user-not-found')) {
+        return new Error('No user found with this email');
+      } else if (message.includes('auth/wrong-password')) {
+        return new Error('Invalid email or password');
+      } else if (message.includes('auth/invalid-credential')) {
+        return new Error('Invalid email or password');
+      } else if (message.includes('auth/operation-not-allowed')) {
+        return new Error('This operation is not allowed');
+      } else if (message.includes('auth/too-many-requests')) {
+        return new Error('Too many login attempts. Please try again later');
+      }
+
+      return error;
+    }
+
+    return new Error('An authentication error occurred');
   }
 }
 
 // Export singleton instance
 export const authService = new FirebaseAuthService();
 
-// Demo credentials helper
-export const getDemoCredentials = () => ({
-  admin: { email: 'admin@healthcare.com', password: 'admin123' },
-  doctor: { email: 'doctor@healthcare.com', password: 'doctor123' },
-  nurse: { email: 'nurse@healthcare.com', password: 'nurse123' },
-});

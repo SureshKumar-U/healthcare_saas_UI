@@ -5,6 +5,7 @@ import { Card, CardContent } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Avatar, AvatarFallback } from '../ui/avatar';
 import { usePatientStore } from '../../store/usePatientStore';
+import { getStatusColor } from '@/app/utils/helpers';
 
 interface PatientGridProps {
   patients: Patient[];
@@ -13,18 +14,7 @@ interface PatientGridProps {
 const PatientGrid = ({ patients }: PatientGridProps) =>  {
   const { selectPatient } = usePatientStore();
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'active':
-        return 'bg-green-100 text-green-800';
-      case 'inactive':
-        return 'bg-gray-100 text-gray-800';
-      case 'critical':
-        return 'bg-red-100 text-red-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
+;
 
   const getInitials = (firstName: string, lastName: string) => {
     return `${firstName[0]}${lastName[0]}`.toUpperCase();

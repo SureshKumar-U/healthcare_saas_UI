@@ -1,15 +1,15 @@
 // Login page component
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, Link } from 'react-router';
 import { Heart, Loader2, Eye, EyeOff } from 'lucide-react';
 import { useAuthStore } from '../../store/useAuthStore';
-import { getDemoCredentials } from '../../services/auth';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Alert, AlertDescription } from '../ui/alert';
+
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -18,6 +18,7 @@ const LoginPage = () => {
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const { login, isLoading, error, clearError } = useAuthStore();
   const navigate = useNavigate();
+  
 
   const validateForm = () => {
     const errors: Record<string, string> = {};
@@ -53,13 +54,6 @@ const LoginPage = () => {
       // Error is handled by the store
       console.error('Login error:', err);
     }
-  };
-
-  const handleDemoLogin = (role: 'admin' | 'doctor' | 'nurse') => {
-    const credentials = getDemoCredentials()[role];
-    setEmail(credentials.email);
-    setPassword(credentials.password);
-    setValidationErrors({});
   };
 
   return (
@@ -148,66 +142,20 @@ const LoginPage = () => {
                 'Sign in'
               )}
             </Button>
+
+            {/* Signup Link */}
+            <p className="text-center text-sm text-gray-600">
+              Don't have an account?{' '}
+              <Link to="/signup" className="text-blue-600 hover:underline font-medium">
+                Sign up here
+              </Link>
+            </p>
           </form>
         </CardContent>
       </Card>
 
-      {/* Demo Credentials */}
-      <Card className="md:w-[400px] mx-auto">
-        <CardHeader>
-          <CardTitle className="text-base">Demo Credentials</CardTitle>
-          <CardDescription>Click to auto-fill credentials for testing</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-            <div>
-              <p className="text-sm font-medium text-gray-900">Administrator</p>
-              <p className="text-xs text-gray-500">admin@healthcare.com</p>
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handleDemoLogin('admin')}
-              disabled={isLoading}
-            >
-              Use
-            </Button>
-          </div>
-          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-            <div>
-              <p className="text-sm font-medium text-gray-900">Doctor</p>
-              <p className="text-xs text-gray-500">doctor@healthcare.com</p>
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handleDemoLogin('doctor')}
-              disabled={isLoading}
-            >
-              Use
-            </Button>
-          </div>
-          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-            <div>
-              <p className="text-sm font-medium text-gray-900">Nurse</p>
-              <p className="text-xs text-gray-500">nurse@healthcare.com</p>
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handleDemoLogin('nurse')}
-              disabled={isLoading}
-            >
-              Use
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
 
-      {/* Footer */}
-      <p className="text-center text-sm text-gray-500">
-        Built with React, TypeScript, and Zustand
-      </p>
+
     </div>
   );
 }

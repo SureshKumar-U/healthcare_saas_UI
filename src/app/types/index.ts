@@ -97,8 +97,10 @@ export interface AuthState {
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
+  initialize: () => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
+  signup: (name: string, email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
   clearError: () => void;
 }
 

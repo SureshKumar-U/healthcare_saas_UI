@@ -4,6 +4,7 @@ import { createBrowserRouter, Navigate } from 'react-router';
 import  DashboardLayout  from './components/layouts/DashboardLayout';
 import AuthLayout  from './components/layouts/AuthLayout';
 import LoginPage from './components/auth/LoginPage';
+import SignupPage from './components/auth/SignupPage';
 import DashboardPage from './components/dashboard/DashboardPage';
 import AnalyticsPage from './components/analytics/AnalyticsPage';
 import PatientsPage from './components/patients/PatientsPage';
@@ -42,6 +43,16 @@ export const router = createBrowserRouter([
             <PublicRoute>
                 <AuthLayout>
                     <LoginPage />
+                </AuthLayout>
+            </PublicRoute>
+        ),
+    },
+    {
+        path: '/signup',
+        element: (
+            <PublicRoute>
+                <AuthLayout>
+                    <SignupPage />
                 </AuthLayout>
             </PublicRoute>
         ),
