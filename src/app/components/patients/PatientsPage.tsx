@@ -1,6 +1,6 @@
 // Patients page with Grid/List view toggle
 
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { Grid3x3, List, Search, Filter, Plus } from 'lucide-react';
 import { usePatientStore } from '../../store/usePatientStore';
 import { Button } from '../ui/button';
