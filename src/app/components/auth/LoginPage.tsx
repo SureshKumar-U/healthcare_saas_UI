@@ -68,7 +68,7 @@ const LoginPage = () => {
       </div>
 
       {/* Login Card */}
-      <Card className='  md:w-[400px] mx-auto shadow-md'>
+      <Card className='  md:w-[400px] mx-auto shadow-md px-2 py-6'>
         <CardHeader>
           <CardTitle>Welcome Back</CardTitle>
           <CardDescription>Enter your credentials to access your dashboard</CardDescription>
@@ -83,7 +83,7 @@ const LoginPage = () => {
             )}
 
             {/* Email Field */}
-            <div className="space-y-2">
+            <div className="space-y-3">
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
@@ -94,7 +94,7 @@ const LoginPage = () => {
                   setEmail(e.target.value);
                   setValidationErrors((prev) => ({ ...prev, email: '' }));
                 }}
-                className={validationErrors.email ? 'border-red-500' : 'border-gray-300'}
+                className={` ${validationErrors.email ? 'border-red-500' : 'border-gray-300'} bg-gray-200`}
                 disabled={isLoading}
               />
               {validationErrors.email && (
@@ -103,7 +103,7 @@ const LoginPage = () => {
             </div>
 
             {/* Password Field */}
-            <div className="space-y-2">
+            <div className="space-y-3">
               <Label htmlFor="password">Password</Label>
               <div className="relative">
                 <Input
@@ -115,7 +115,7 @@ const LoginPage = () => {
                     setPassword(e.target.value);
                     setValidationErrors((prev) => ({ ...prev, password: '' }));
                   }}
-                  className={validationErrors.password ? 'border-red-500' : 'border-gray-300'}
+                  className={` ${validationErrors.password ? 'border-red-500' : 'border-gray-300'} bg-gray-200`}
                   disabled={isLoading}
                 />
                 <button

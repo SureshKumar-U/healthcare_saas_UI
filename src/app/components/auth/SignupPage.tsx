@@ -91,20 +91,19 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {/* Logo and Title */}
       <div className="text-center">
         <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl mb-4">
           <Heart className="w-8 h-8 text-white" />
         </div>
         <h1 className="text-2xl font-bold text-gray-900">HealthCare SaaS</h1>
-        <p className="mt-2 text-gray-600">Create your account</p>
       </div>
 
       {/* Signup Card */}
-      <Card className="md:w-[400px] mx-auto">
+      <Card className="md:w-[400px] mx-auto px-2 py-5 shadow-md">
         <CardHeader>
-          <CardTitle>Get Started</CardTitle>
+          <CardTitle>Create your account</CardTitle>
           <CardDescription>Sign up to access the healthcare management system</CardDescription>
         </CardHeader>
         <CardContent>
@@ -126,7 +125,7 @@ const SignupPage = () => {
                 placeholder="John Doe"
                 value={formData.name}
                 onChange={handleChange}
-                className={validationErrors.name ? 'border-red-500' : 'border-gray-300'}
+                className={` ${validationErrors.name ? 'border-red-500' : 'border-gray-300'} bg-gray-200`}
                 disabled={isLoading}
               />
               {validationErrors.name && (
@@ -144,7 +143,7 @@ const SignupPage = () => {
                 placeholder="you@healthcare.com"
                 value={formData.email}
                 onChange={handleChange}
-                className={validationErrors.email ? 'border-red-500' : 'border-gray-300'}
+                className={` ${validationErrors.email ? 'border-red-500' : 'border-gray-300'} bg-gray-200`} 
                 disabled={isLoading}
               />
               {validationErrors.email && (
@@ -163,7 +162,7 @@ const SignupPage = () => {
                   placeholder="Create a strong password"
                   value={formData.password}
                   onChange={handleChange}
-                  className={validationErrors.password ? 'border-red-500' : 'border-gray-300'}
+                  className={` ${validationErrors.password ? 'border-red-500' : 'border-gray-300'} bg-gray-200`}
                   disabled={isLoading}
                 />
                 <button
@@ -194,7 +193,7 @@ const SignupPage = () => {
                   placeholder="Confirm your password"
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  className={validationErrors.confirmPassword ? 'border-red-500' : ''}
+                  className={` ${validationErrors.confirmPassword ? 'border-red-500' : 'border-gray-300'} bg-gray-200`  }
                   disabled={isLoading}
                 />
                 <button
