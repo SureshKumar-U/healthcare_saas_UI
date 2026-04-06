@@ -13,12 +13,7 @@ This is a production-ready B2B Healthcare SaaS application built as a frontend d
 - Login flow with validation and error handling
 - Session persistence with localStorage
 - Protected route handling
-- Role-based access (Admin, Doctor, Nurse)
 
-**Demo Credentials:**
-- Admin: `admin@healthcare.com` / `admin123`
-- Doctor: `doctor@healthcare.com` / `doctor123`
-- Nurse: `nurse@healthcare.com` / `nurse123`
 
 ### 2. Application Pages
 
@@ -125,30 +120,27 @@ src/app/
 - **React Router 7** - Client-side routing
 
 ### UI Components
-- **Radix UI** - Accessible component primitives
+- **Shadecn** - Accessible component primitives
 - **Lucide React** - Icon library
 - **Recharts** - Data visualization
-- **Sonner** - Toast notifications
 
 ### Additional Libraries
 - **Firebase** - Authentication (mock implementation)
-- **Motion** - Animations
-- **date-fns** - Date utilities
 
 ## 🚀 Getting Started
 
 ### Installation
 ```bash
 # Install dependencies
-pnpm install
+npm install
 
 # Start development server
-pnpm dev
+npm dev
 ```
 
 ### First Steps
-1. Navigate to the login page
-2. Use one of the demo credentials
+1. Navigate to the login page , if you have account already
+2. Navigate to the signinpage, if you dont have an account
 3. Explore the dashboard
 4. Try the patient management features
 5. Toggle between Grid and List views
@@ -160,7 +152,7 @@ pnpm dev
 1. User enters credentials
 2. Validation checks (client-side)
 3. Mock Firebase authentication
-4. Session storage
+4. local storage
 5. Redirect to dashboard
 6. Protected route access
 
@@ -188,12 +180,6 @@ pnpm dev
 - Adaptive grid/list layouts
 - Touch-friendly interface
 
-### Performance Optimizations
-- Lazy loading
-- Memoized components
-- Optimized re-renders
-- Efficient state updates
-- Minimal bundle size
 
 ### Code Quality
 - TypeScript strict mode
@@ -221,10 +207,6 @@ pnpm dev
 
 - Client-side validation
 - Protected routes
-- Session management
-- XSS prevention
-- CSRF token ready
-- Secure credential handling
 
 ## 📈 Scalability Features
 
@@ -235,28 +217,6 @@ pnpm dev
 - Type-safe contracts
 - Extensible state management
 
-## 🧪 Testing Ready
-
-The application is structured for easy testing:
-- Isolated components
-- Pure functions in services
-- Testable state management
-- Mock data utilities
-- Clear separation of concerns
-
-## 🎯 Evaluation Criteria Coverage
-
-### ✅ Code Quality & Structure
-- Clean, organized code
-- Consistent patterns
-- Well-documented
-- TypeScript best practices
-
-### ✅ UI/UX & Responsiveness
-- Mobile-responsive
-- Intuitive interface
-- Smooth interactions
-- Professional design
 
 ### ✅ State Management
 - Zustand implementation
@@ -281,20 +241,6 @@ The application is structured for easy testing:
 - Easy to extend
 - Well-structured
 
-## 🔮 Future Enhancements
-
-- Real Firebase integration
-- Backend API connection
-- Advanced analytics
-- Real-time updates
-- Multi-language support
-- Theme customization
-- Advanced filtering
-- Export functionality
-- Appointment scheduling
-- Doctor management
-- Billing system
-- Report generation
 
 ## 📝 Notes
 
@@ -302,7 +248,6 @@ The application is structured for easy testing:
 - Uses **mock data** for demonstration
 - **Firebase is simulated** for demo purposes
 - **Service Worker** works in production builds
-- All **credentials are for demo** purposes only
 
 ## 🤝 Contributing
 
@@ -319,4 +264,4 @@ This project is created for demonstration purposes.
 
 ---
 
-**Built with ❤️ using React, TypeScript, and modern web technologies**
+**Built with ❤️ using React and TypeScript**
