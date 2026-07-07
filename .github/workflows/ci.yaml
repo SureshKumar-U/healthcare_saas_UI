@@ -1,0 +1,13 @@
+name: "react app deployment workflow"
+on:
+  push:
+    branches:
+      -main
+
+jobs:
+  checkout:
+    runs-on: ubuntu-latest
+    steps:
+      -name: "checkout"
+      run: echo "checkout"
+      
