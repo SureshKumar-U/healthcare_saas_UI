@@ -8,6 +8,8 @@ jobs:
   checkout:
     runs-on: ubuntu-latest
     steps:
-      - name: "checkout the code"
-        run: echo "checkout"
+      - name: "Set up node environment"
+        uses: actions/setup-node@v3
+      - name: "check version of node"
+        run: node -v
       
