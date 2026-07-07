@@ -10,6 +10,8 @@ jobs:
     steps:
       - name: "Set up node environment"
         uses: actions/setup-node@v3
+        with:
+          node-version: "18"
       - name: "check version of node"
         run: node -v
       
