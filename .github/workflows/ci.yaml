@@ -12,6 +12,15 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "18"
+
       - name: "check version of node"
         run: node -v
-      
+
+      - name: "clone the repository"
+        uses: "actions/checkout@v3"
+
+      - name: "Install dependencies"
+        run: npm install 
+
+      - name: "Build the React app"
+        run: npm run build
